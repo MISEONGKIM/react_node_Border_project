@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import Contact from "./Contact";
+import Board from "./board";
 
 class App extends Component {
   render() {
-    return <Contact />;
+    return <Board />;
   }
 }
 

@@ -39,35 +39,70 @@ export default class contactDetails extends Component {
   }
 
   render() {
-    const details = (
-      <div>
-        <p>{this.props.contact.name}</p>
-        <p>{this.props.contact.phone}</p>
-      </div>
-    );
+    const edit = this.state.boardData.map((data, i) => {
+      <table>
+        <tr>
+          <th colspan="2">
+            <input
+              name="title"
+              value={data.title}
+              onChange={this.handleChange}
+            />
+          </th>
+        </tr>
+        <tr>
+          <td>{data.writer}</td>
+          <td>{data.date}</td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <textarea
+              name="content"
+              value={data.content}
+              onChange={this.handleChange}
+            />
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <form>
+              <button onClick={this.handleToggle}>OK</button>
+              <button>취소</button>
+            </form>
+          </td>
+        </tr>
+      </table>;
+    });
 
-    const edit = (
-      <div>
-        <input
-          name="name"
-          value={this.state.name}
-          onChange={this.handleChange}
-        />
-        <br />
-        <input
-          name="phone"
-          value={this.state.phone}
-          onChange={this.handleChange}
-        />
-      </div>
-    );
-    const view = this.state.isEdit ? edit : details;
+    // const details = (
+    //   <div>
+    //     <p>{this.props.contact.name}</p>
+    //     <p>{this.props.contact.phone}</p>
+    //   </div>
+    // );
+
+    // const edit = (
+    //   <div>
+    //     <input
+    //       name="name"
+    //       value={this.state.name}
+    //       onChange={this.handleChange}
+    //     />
+    //     <br />
+    //     <input
+    //       name="phone"
+    //       value={this.state.phone}
+    //       onChange={this.handleChange}
+    //     />
+    //   </div>
+    // );
+    //  const view = this.state.isEdit ? edit : details;
 
     const blank = <div>Not Selected</div>;
     return (
       <div>
         <h2>Details</h2>
-        {this.props.isSelected ? view : blank}
+        {/* {this.props.isSelected ? view : blank} */}
         <button onClick={this.handleToggle}>
           {this.state.isEdit ? "OK" : "Edit"}
         </button>
