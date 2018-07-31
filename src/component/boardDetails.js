@@ -39,41 +39,6 @@ export default class contactDetails extends Component {
   }
 
   render() {
-    const edit = this.state.boardData.map((data, i) => {
-      <table>
-        <tr>
-          <th colspan="2">
-            <input
-              name="title"
-              value={data.title}
-              onChange={this.handleChange}
-            />
-          </th>
-        </tr>
-        <tr>
-          <td>{data.writer}</td>
-          <td>{data.date}</td>
-        </tr>
-        <tr>
-          <td colspan="2">
-            <textarea
-              name="content"
-              value={data.content}
-              onChange={this.handleChange}
-            />
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2">
-            <form>
-              <button onClick={this.handleToggle}>OK</button>
-              <button>취소</button>
-            </form>
-          </td>
-        </tr>
-      </table>;
-    });
-
     // const details = (
     //   <div>
     //     <p>{this.props.contact.name}</p>
