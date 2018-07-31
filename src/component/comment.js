@@ -110,19 +110,20 @@ export default class Contact extends Component {
   handleRemove(idx) {
     this.setState({
       boardData: update(this.state.boardData, {
-        $splice: [[idx - 1, 1]] //배열의 배열로 전달해줘야함
+        $splice: [[idx, 1]] //배열의 배열로 전달해줘야함
       })
     });
   }
 
   handleEdit(idx,title,content) {
-    const board = this.state.boardData[idx - 1];
     this.setState({
-      board: {
-        title: title,
-        content: content,
-        date: new Date()
-      }
+      boardData: update(this.state.boardData, {
+        [idx]: {
+          title:  { $set: title },
+          content: { $set: content },
+          date: { $set: new Data() }
+        }
+      })
     });
   }
 

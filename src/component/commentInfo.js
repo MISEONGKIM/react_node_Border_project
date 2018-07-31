@@ -5,6 +5,7 @@ export default class ContactInfo extends Component {
     super(props);
     this.state = {
       isEdit: false,
+      boardData: [],
       idx: 0,
       writer: "",
       title: "",
@@ -17,11 +18,11 @@ export default class ContactInfo extends Component {
     this.handleToggle = this.handleToggle.bind(this);
   }
 
-  // componentDidMount() {
-  //   this.setState({
-  //     boardData: this.props.boardData
-  //   });
-  // }
+  componentDidMount() {
+    this.setState({
+      boardData: this.props.boardData
+    });
+  }
 
   handleChange(e) {
     let nextState = {}; //비어있는 객체 만들어서 이렇게 하면 여러개의 input태그 처리가능
@@ -34,22 +35,20 @@ export default class ContactInfo extends Component {
       this.state.title,
       this.state.content);
   }
-  handleToggle(e) {
-    console.log(this.state.isEdit);
+  handleToggle(idx) {
     if (!this.state.isEdit) {
       this.setState({
-        idx: e.target.value,
-        writer: this.props.boardData[e.target.value - 1].writer,
-        title: this.props.boardData[e.target.value - 1].title,
-        content: this.props.boardData[e.target.value - 1].content,
-        date : this.props.boardData[e.target.value - 1].date
+        idx: idx,
+        title: this.state.title,
+        content: this.state.content
       });
     } else {
-     this.handleEdit();
+      this.handleEdit();
     }
     this.setState({
       isEdit: !this.state.isEdit
     });
+    // console.log(isEdit); //젤 첨에 isEdit 토글되고 true 나올 것 같지만 setState가 비동기라서 log 먼저 실행해서 false 나옴
   }
 
   render() {
@@ -82,8 +81,8 @@ export default class ContactInfo extends Component {
                     <tr>
                       <td colSpan="2" style={{ border: "1px solid" }}>
                         <form>
-                          <button name='idx' value={data.idx} onClick={this.handleToggle}>수정</button>
-                          <button  name='idx' value={data.idx} onClick={this.props.onRemove}>삭제</button>
+                          <button onClick={this.handleToggle(data.idx)}>수정</button>
+                          <button onClick={this.props.onRemove(data.idx)}>삭제</button>
                         </form>
                       </td>
                     </tr>
@@ -97,27 +96,28 @@ export default class ContactInfo extends Component {
         : "게시글이 없습니다";
     };
 
-    const edit =  (
+    const edit = this.state.boardData.map((data, i) => {
+      return (
         <table>
           <tr>
-            <th style={{ border: "1px solid" }}> {this.state.idx} </th>
+            <th style={{ border: "1px solid" }}> {data.idx} </th>
             <th>
               <input
                 name="title"
-                value={this.state.title}
+                value={data.title}
                 onChange={this.handleChange}
               />
             </th>
           </tr>
           <tr>
-            <td>{this.state.writer}</td>
-            <td>{this.state.date}</td>
+            <td>{data.writer}</td>
+            <td>{data.date}</td>
           </tr>
           <tr>
             <td colspan="2">
               <textarea
                 name="content"
-                value={this.state.content}
+                value={data.content}
                 onChange={this.handleChange}
               />
             </td>
@@ -125,17 +125,14 @@ export default class ContactInfo extends Component {
           <tr>
             <td colspan="2">
               <form>
-                <button  name='idx' value={this.state.idx} onClick={this.handleToggle}>OK</button>
-                <button onClick = {() => {
-                    this.setState({
-                      isEdit: !this.state.isEdit
-                    });
-                }}>취소</button>
+                <button onClick={this.handleToggle(data.idx)}>OK</button>
+                <button>취소</button>
               </form>
             </td>
           </tr>
         </table>
       );
-    return <div>{this.state.isEdit ? edit : boards(this.props.boardData)}</div>;
+    });
+    return <div>{boards(this.state.boardData)}</div>;
   }
 }
