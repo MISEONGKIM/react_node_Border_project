@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import BoardInfo from "./boardInfo";
-import BoardDetails from "./boardDetails";
 import update from "react-addons-update"; //immutability Helper
 import BoardCreate from "./boardCreate";
 
@@ -10,24 +9,6 @@ export default class Contact extends Component {
     this.state = {
       createClick: false,
       keyword: "",
-      // boardData: [
-      //   {
-      //     name: "A",
-      //     phone: "010-0000-0001"
-      //   },
-      //   {
-      //     name: "B",
-      //     phone: "010-0000-0002"
-      //   },
-      //   {
-      //     name: "C",
-      //     phone: "010-0000-0003"
-      //   },
-      //   {
-      //     name: "D",
-      //     phone: "010-0000-0004"
-      //   }
-      // ]
       boardData: [
         {
           idx: "1",
@@ -85,9 +66,8 @@ export default class Contact extends Component {
   //     localStorage.boardData = JSON.stringify(this.state.boardData); //바꼈으면 loacalStorage에 저장
   //   }
   // }
-  //handleChange는 this가 뭔지 모름 그러므로 위처럼 bind 해줘야함
+
   handleChange(e) {
-    //e : 이벤트 객체
     this.setState({
       keyword: e.target.value
     });
@@ -108,21 +88,25 @@ export default class Contact extends Component {
   }
 
   handleRemove(idx) {
+    console.log("remove " + idx);
+
     this.setState({
       boardData: update(this.state.boardData, {
-        $splice: [[idx - 1, 1]] //배열의 배열로 전달해줘야함
+        $splice: [[idx, 1]]
       })
     });
   }
 
-  handleEdit(idx,title,content) {
-    const board = this.state.boardData[idx - 1];
+  handleEdit(idx, title, content) {
+    console.log(idx);
     this.setState({
-      board: {
-        title: title,
-        content: content,
-        date: new Date()
-      }
+      boardData: update(this.state.boardData, {
+        [idx - 1]: {
+          title: { $set: title },
+          content: { $set: content },
+          date: { $set: new Date().toString() }
+        }
+      })
     });
   }
 

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-
-export default class ContactInfo extends Component {
+import PropTypes from "prop-types";
+export default class BoardInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -15,6 +15,7 @@ export default class ContactInfo extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
+    this.handleRemove = this.handleRemove.bind(this);
   }
 
   // componentDidMount() {
@@ -30,9 +31,7 @@ export default class ContactInfo extends Component {
   }
 
   handleEdit() {
-    this.props.onEdit(this.state.idx,
-      this.state.title,
-      this.state.content);
+    this.props.onEdit(this.state.idx, this.state.title, this.state.content);
   }
   handleToggle(e) {
     console.log(this.state.isEdit);
@@ -42,29 +41,33 @@ export default class ContactInfo extends Component {
         writer: this.props.boardData[e.target.value - 1].writer,
         title: this.props.boardData[e.target.value - 1].title,
         content: this.props.boardData[e.target.value - 1].content,
-        date : this.props.boardData[e.target.value - 1].date
+        date: this.props.boardData[e.target.value - 1].date
       });
     } else {
-     this.handleEdit();
+      this.handleEdit();
     }
     this.setState({
       isEdit: !this.state.isEdit
     });
   }
-
+  handleRemove(e) {
+    console.log("remove2 " + e.target.value);
+    this.props.onRemove(e.target.value);
+    this.setState({
+      idx: 0
+    });
+  }
   render() {
     const boards = boardData => {
       return boardData.length > 0
         ? boardData.map((data, i) => {
             return (
-              <div>
+              <div key={i}>
                 <table style={{ border: "1px solid" }}>
                   <tbody>
                     <tr>
                       <th style={{ border: "1px solid" }}>{data.idx}</th>
-                      <th style={{ border: "1px solid" }}>
-                        {data.title}
-                      </th>
+                      <th style={{ border: "1px solid" }}>{data.title}</th>
                     </tr>
                     <tr>
                       <td style={{ border: "1px solid" }}>
@@ -81,13 +84,25 @@ export default class ContactInfo extends Component {
                     </tr>
                     <tr>
                       <td colSpan="2" style={{ border: "1px solid" }}>
-                        <form>
-                          <button name='idx' value={data.idx} onClick={this.handleToggle}>수정</button>
-                          <button  name='idx' value={data.idx} onClick={this.props.onRemove}>삭제</button>
-                        </form>
+                        <button
+                          name="idx"
+                          value={data.idx}
+                          onClick={this.handleToggle}
+                        >
+                          수정
+                        </button>
+                        <button
+                          name="idx"
+                          value={i}
+                          onClick={this.handleRemove}
+                        >
+                          삭제
+                        </button>
                       </td>
                     </tr>
-                    <tr>댓글다는곳</tr>
+                    <tr>
+                      <td>댓글다는곳</td>
+                    </tr>
                   </tbody>
                 </table>
                 <p />
@@ -97,11 +112,12 @@ export default class ContactInfo extends Component {
         : "게시글이 없습니다";
     };
 
-    const edit =  (
-        <table>
+    const edit = (
+      <table style={{ border: "1px solid" }}>
+        <tbody>
           <tr>
             <th style={{ border: "1px solid" }}> {this.state.idx} </th>
-            <th>
+            <th style={{ border: "1px solid" }}>
               <input
                 name="title"
                 value={this.state.title}
@@ -110,11 +126,11 @@ export default class ContactInfo extends Component {
             </th>
           </tr>
           <tr>
-            <td>{this.state.writer}</td>
-            <td>{this.state.date}</td>
+            <td style={{ border: "1px solid" }}>{this.state.writer}</td>
+            <td style={{ border: "1px solid" }}>{this.state.date}</td>
           </tr>
           <tr>
-            <td colspan="2">
+            <td colSpan="2" style={{ border: "1px solid" }}>
               <textarea
                 name="content"
                 value={this.state.content}
@@ -123,19 +139,51 @@ export default class ContactInfo extends Component {
             </td>
           </tr>
           <tr>
-            <td colspan="2">
+            <td colSpan="2" style={{ border: "1px solid" }}>
               <form>
-                <button  name='idx' value={this.state.idx} onClick={this.handleToggle}>OK</button>
-                <button onClick = {() => {
+                <button
+                  name="idx"
+                  value={this.state.idx}
+                  onClick={this.handleToggle}
+                >
+                  OK
+                </button>
+                <button
+                  onClick={() => {
                     this.setState({
                       isEdit: !this.state.isEdit
                     });
-                }}>취소</button>
+                  }}
+                >
+                  취소
+                </button>
               </form>
             </td>
           </tr>
-        </table>
-      );
+        </tbody>
+      </table>
+    );
     return <div>{this.state.isEdit ? edit : boards(this.props.boardData)}</div>;
   }
 }
+BoardInfo.defaultProps = {
+  boardData: {
+    idx: 0,
+    writer: "",
+    title: "",
+    content: "",
+    date: ""
+  },
+  onRemove: () => {
+    console.error("onRemove not defined");
+  },
+  onEdit: () => {
+    console.error("onEdit not defined");
+  }
+};
+
+BoardInfo.propTypes = {
+  boardData: PropTypes.array,
+  onRemove: PropTypes.func,
+  onEdit: PropTypes.func
+};

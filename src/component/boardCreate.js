@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { METHODS } from "http";
 
-export default class ContactCreate extends Component {
+export default class BoardCreate extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -25,11 +25,11 @@ export default class ContactCreate extends Component {
 
   handleClick() {
     const board = {
-      //값이 지정되고 바뀔일 없으니 const로 지정
+      idx: this.props.idx,
       writer: this.state.writer,
       title: this.state.title,
       content: this.state.content,
-      date: new Date()
+      date: new Date().toString()
     };
 
     this.props.onCreate(board);
@@ -54,56 +54,58 @@ export default class ContactCreate extends Component {
       <div>
         <h2>글쓰기</h2>
         <table style={{ border: "1px solid" }}>
-          <tr>
-            <td>
-              <input
-                type="text"
-                name="writer"
-                placeholder="작성자"
-                value={this.state.writer}
-                onChange={this.handleChange}
-                ref={ref => {
-                  //ref는 dom 외에더 컴포넌트에도 지정 가능
-                  this.writerInput = ref;
-                }}
-              />{" "}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <input
-                type="text"
-                name="title"
-                placeholder="제목을 입력하세요"
-                value={this.state.title}
-                onChange={this.handleChange}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <textarea
-                type="text"
-                name="content"
-                placeholder="내용을 입력하세요"
-                value={this.state.content}
-                onChange={this.handleChange}
-                onKeyPress={this.handleKeyPress}
-              />
-            </td>
-          </tr>
-          <button onClick={this.handleClick}>등록</button>
+          <tbody>
+            <tr>
+              <td>
+                <input
+                  type="text"
+                  name="writer"
+                  placeholder="작성자"
+                  value={this.state.writer}
+                  onChange={this.handleChange}
+                  ref={ref => {
+                    //ref는 dom 외에더 컴포넌트에도 지정 가능
+                    this.writerInput = ref;
+                  }}
+                />{" "}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input
+                  type="text"
+                  name="title"
+                  placeholder="제목을 입력하세요"
+                  value={this.state.title}
+                  onChange={this.handleChange}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <textarea
+                  type="text"
+                  name="content"
+                  placeholder="내용을 입력하세요"
+                  value={this.state.content}
+                  onChange={this.handleChange}
+                  onKeyPress={this.handleKeyPress}
+                />
+              </td>
+            </tr>
+          </tbody>
         </table>
+        <button onClick={this.handleClick}>등록</button>
       </div>
     );
   }
 }
 //func 함수라는 의미
-ContactCreate.propTypes = {
+BoardCreate.propTypes = {
   onCreate: PropTypes.func
 };
 
-ContactCreate.defaultProps = {
+BoardCreate.defaultProps = {
   onCreate: () => {
     console.error("onCreate not defined");
   }

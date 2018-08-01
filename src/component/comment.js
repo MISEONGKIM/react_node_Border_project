@@ -8,54 +8,20 @@ export default class Contact extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      createClick: false,
-      keyword: "",
-      // boardData: [
-      //   {
-      //     name: "A",
-      //     phone: "010-0000-0001"
-      //   },
-      //   {
-      //     name: "B",
-      //     phone: "010-0000-0002"
-      //   },
-      //   {
-      //     name: "C",
-      //     phone: "010-0000-0003"
-      //   },
-      //   {
-      //     name: "D",
-      //     phone: "010-0000-0004"
-      //   }
-      // ]
-      boardData: [
+      commentData: [
         {
-          idx: "1",
-          writer: "kms",
-          title: "good!",
-          content: "good good good",
-          date: "2019-07-31"
+          cIdx: "1",
+          cPost: "1",
+          cWriter: "kms",
+          cContent: "good good good",
+          cDate: "2019-07-31"
         },
         {
-          idx: "2",
-          writer: "kms",
-          title: "good!2",
-          content: "good2 good good",
-          date: "2019-07-31"
-        },
-        {
-          idx: "3",
-          writer: "kms",
-          title: "good!3",
-          content: "good3 good good",
-          date: "2019-07-31"
-        },
-        {
-          idx: "4",
-          writer: "kms",
-          title: "good!4",
-          content: "good4 good good",
-          date: "2019-07-31"
+          cIdx: "1",
+          cPost: "2",
+          cWriter: "kms",
+          cContent: "ggggg",
+          cDate: "2019-07-31"
         }
       ]
     };
@@ -115,13 +81,13 @@ export default class Contact extends Component {
     });
   }
 
-  handleEdit(idx,title,content) {
+  handleEdit(idx, title, content) {
     this.setState({
       boardData: update(this.state.boardData, {
         [idx]: {
-          title:  { $set: title },
+          title: { $set: title },
           content: { $set: content },
-          date: { $set: new Data() }
+          date: { $set: new Date().toString() }
         }
       })
     });

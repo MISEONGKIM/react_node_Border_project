@@ -6,7 +6,7 @@ export default class ContactCreate extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      idx: this.props.idx,
+      idx: 0,
       writer: "",
       title: "",
       content: "",
@@ -26,10 +26,11 @@ export default class ContactCreate extends Component {
   handleClick() {
     const board = {
       //값이 지정되고 바뀔일 없으니 const로 지정
+      idx: this.props.idx,
       writer: this.state.writer,
       title: this.state.title,
       content: this.state.content,
-      date: new Date()
+      date: new Date().toString()
     };
 
     this.props.onCreate(board);
